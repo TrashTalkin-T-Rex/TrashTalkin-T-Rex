@@ -8,6 +8,7 @@ import "./index.css";
 import App from "./App";
 import SignUpPage from "./Components/AuthComp/SignupPAge";
 import LoginPage from "./Components/AuthComp/Login";
+import ProfilePage from "./Components/UsersComp/ProfilePage";
 
 
 const router = createBrowserRouter([
@@ -22,6 +23,10 @@ const router = createBrowserRouter([
   {
     path:"/login",
     element:<LoginPage/>
+  },
+  {
+    path:"/profile",
+    element:<ProfilePage/>
   }
 ]);
 

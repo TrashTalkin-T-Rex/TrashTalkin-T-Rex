@@ -1,9 +1,30 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import { Link, useNavigate } from 'react-router-dom';
+import fireapp from "../Firebase/FireApp.js"
+import { getAuth, onAuthStateChanged, createUserWithEmailAndPassword } from 'firebase/auth';
 
 const LandingPage = () => {
     const navigate = useNavigate();
+
+    const auth = getAuth(fireapp)
+
+    const [user, setUser] = useState(null);
+
+    useEffect(() => {
+      // Check auth state on page load
+      const unsubscribe = onAuthStateChanged(auth, (user) => {
+        if (user) {
+          navigate('/profile'); // Redirect logged-in users to profile page
+        } else {
+          setLoading(false); // Stop loading for unauthenticated users
+        }
+      });
+  
+      return () => unsubscribe(); // Clean up the listener
+    }, [auth, navigate]);
+    
+
   return (
     <div className="relative min-h-screen overflow-y-auto">
       {/* Animated Multicolor Gradient Background */}

@@ -2,11 +2,23 @@ import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 
+import { useNavigate } from 'react-router-dom';
+import { signInWithEmailAndPassword } from 'firebase/auth';
+
+import Fireapp from "../../Firebase/FireApp.js"
+import { getAuth } from 'firebase/auth';
+
+
+
 const LoginPage = () => {
   const [formData, setFormData] = useState({
     email: '',
     password: '',
   });
+
+  const auth = getAuth(Fireapp)
+  const navigate = useNavigate()
+
 
   const [error, setError] = useState('');
 
@@ -18,7 +30,7 @@ const LoginPage = () => {
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async(e) => {
     e.preventDefault();
 
     // Basic validation: Check if email and password are provided
@@ -29,7 +41,14 @@ const LoginPage = () => {
 
     setError('');
 
-    // Add login logic here (e.g., API call)
+    // Add login logic here (e.g., API call)'
+    try {
+      const userCred = await  signInWithEmailAndPassword(auth,formData.email,formData.password)
+      console.log('user signin in', userCred.user)
+      navigate("/profile")
+    } catch (error) {
+      console.log(error)
+    }
     console.log('Login data:', formData);
   };
 
